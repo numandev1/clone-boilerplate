@@ -1,0 +1,23 @@
+{
+  "name": "create-boilerplate-cli",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nomi9995/create-boilerplate-cli.git"
+  },
+  "keywords": [
+    "create",
+    "boilerplate"
+  ],
+  "author": "nomi9995",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nomi9995/create-boilerplate-cli/issues"
+  },
+  "homepage": "https://github.com/nomi9995/create-boilerplate-cli#readme"
+}
