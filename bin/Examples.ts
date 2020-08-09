@@ -244,7 +244,7 @@ function ensureProjectHasGitIgnore(projectRoot: string): void {
 
 function hasExample(name: string): Promise<boolean> {
   return isUrlOk(
-    `https://api.github.com/repos/nomi9995/clone-boilerplate/contents/${encodeURIComponent(
+    `https://api.github.com/repos/nomi9995/boilerplate-examples/contents/${encodeURIComponent(
       name
     )}/package.json`
   );
@@ -263,13 +263,13 @@ function downloadAndExtractRepoAsync(
 
 function downloadAndExtractExampleAsync(root: string, name: string): Promise<void> {
   return pipeline(
-    got.stream('https://codeload.github.com/nomi9995/clone-boilerplate/tar.gz/master'),
+    got.stream('https://codeload.github.com/nomi9995/boilerplate-examples/tar.gz/master'),
     tar.extract({ cwd: root, strip: 2 }, [`examples-master/${name}`])
   );
 }
 
 async function listAsync(): Promise<any> {
-  const res = await got('https://api.github.com/repos/nomi9995/clone-boilerplate/contents');
+  const res = await got('https://api.github.com/repos/nomi9995/boilerplate-examples/contents');
   const results = JSON.parse(res.body);
   return results.filter(({ name, type }: any) => type === 'dir' && !name?.startsWith('.'));
 }
