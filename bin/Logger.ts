@@ -1,5 +1,6 @@
 import chalk from 'chalk';
 import program from 'commander';
+import ora from 'ora';
 
 type Color = (...text: string[]) => string;
 
@@ -138,6 +139,12 @@ log.chalk = chalk;
 
 log.config = {
   raw: false,
+};
+
+log.logNewSection = function(title: string) {
+  let spinner = ora(chalk.bold(title));
+  spinner.start();
+  return spinner;
 };
 
 export default log;

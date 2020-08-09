@@ -1,6 +1,3 @@
-/**
- * Inspired by create-next-app
- */
 import JsonFile, { JSONObject } from '@expo/json-file';
 import chalk from 'chalk';
 import fs from 'fs';
@@ -11,6 +8,8 @@ import { Stream } from 'stream';
 import tar from 'tar';
 import terminalLink from 'terminal-link';
 import { promisify } from 'util';
+
+import log from './Logger';
 
 // @ts-ignore
 const pipeline = promisify(Stream.pipeline);
@@ -23,29 +22,28 @@ type RepoInfo = {
 };
 
 export async function promptAsync(): Promise<string | null> {
-  let examplesJSON: any;
+  //for languages prompt
+  let languagesJson: any;
 
   try {
-    examplesJSON = await listAsync();
+    languagesJson = await listAsync();
   } catch (error) {
     console.log();
-    console.log('Failed to fetch the list of examples with the following error:');
+    console.log('Failed to fetch the list of Languages with the following error:');
     console.error(error);
-    console.log();
-    console.log('Switching to the default starter app');
-    console.log();
+    process.exit(1);
   }
 
-  if (examplesJSON) {
-    const choices = examplesJSON.map(({ name }: any) => ({
+  if (languagesJson) {
+    const choices = languagesJson.map(({ name }: any) => ({
       title: name,
       value: name,
     }));
 
-    const nameRes = await prompts({
+    const languageRes = await prompts({
       type: 'autocomplete',
-      name: 'exampleName',
-      message: 'Pick an example',
+      name: 'lanuageName',
+      message: 'Pick a Language',
       choices,
       suggest: (input: any, choices: any) => {
         const regex = new RegExp(input, 'i');
@@ -53,13 +51,59 @@ export async function promptAsync(): Promise<string | null> {
       },
     });
 
-    if (!nameRes.exampleName) {
+    if (!languageRes.lanuageName) {
       console.log();
       console.log('Please specify an example or use the default starter app.');
       process.exit(1);
     }
+    const lanuageName = languageRes.lanuageName.trim();
 
-    return nameRes.exampleName.trim();
+    //for examples prompt
+    let examplesJson: any;
+
+    try {
+      examplesJson = await listAsync(`/${lanuageName}`);
+    } catch (error) {
+      console.log();
+      console.log('Failed to fetch the list of Examples with the following error:');
+      console.error(error);
+      process.exit(1);
+    }
+
+    if (examplesJson) {
+      const choices = examplesJson.map(({ name }: any) => ({
+        title: name,
+        value: name,
+      }));
+
+      const nameRes = await prompts({
+        type: 'autocomplete',
+        name: 'exampleName',
+        message: 'Pick a Boilerplate',
+        choices,
+        suggest: (input: any, choices: any) => {
+          const regex = new RegExp(input, 'i');
+          return choices.filter((choice: any) => regex.test(choice.title));
+        },
+      });
+
+      if (!nameRes.exampleName) {
+        console.log();
+        console.log('Please specify an example or use the default starter app.');
+        process.exit(1);
+      }
+      const exampleName = nameRes.exampleName;
+      let extractTemplateStep = log.logNewSection(`Locating project files.`);
+      try {
+        await downloadAndExtractExampleAsync(lanuageName, exampleName);
+      } catch (error) {
+        extractTemplateStep.fail(
+          'Something went wrong in downloading and extracting the project files.'
+        );
+        process.exit(1);
+      }
+      extractTemplateStep.succeed('Downloaded and extracted project files.');
+    }
   }
 
   return null;
@@ -105,143 +149,6 @@ function hasRepo({ username, name, branch, filePath }: RepoInfo) {
   return isUrlOk(contentsUrl + packagePath + `?ref=${branch}`);
 }
 
-export async function resolveTemplateArgAsync(
-  projectRoot: string,
-  oraInstance: any,
-  template: string,
-  templatePath?: string
-) {
-  let repoInfo: RepoInfo | undefined;
-
-  if (template) {
-    // @ts-ignore
-    let repoUrl: URL | undefined;
-
-    try {
-      // @ts-ignore
-      repoUrl = new URL(template);
-    } catch (error) {
-      if (error.code !== 'ERR_INVALID_URL') {
-        oraInstance.fail(error);
-        process.exit(1);
-      }
-    }
-
-    if (repoUrl) {
-      if (repoUrl.origin !== 'https://github.com') {
-        oraInstance.fail(
-          `Invalid URL: ${chalk.red(
-            `"${template}"`
-          )}. Only GitHub repositories are supported. Please use a GitHub URL and try again.`
-        );
-        process.exit(1);
-      }
-
-      repoInfo = await getRepoInfo(repoUrl, templatePath);
-
-      if (!repoInfo) {
-        oraInstance.fail(
-          `Found invalid GitHub URL: ${chalk.red(
-            `"${template}"`
-          )}. Please fix the URL and try again.`
-        );
-        process.exit(1);
-      }
-
-      const found = await hasRepo(repoInfo);
-
-      if (!found) {
-        oraInstance.fail(
-          `Could not locate the repository for ${chalk.red(
-            `"${template}"`
-          )}. Please check that the repository exists and try again.`
-        );
-        process.exit(1);
-      }
-    } else {
-      const found = await hasExample(template);
-
-      if (!found) {
-        oraInstance.fail(`Could not locate the template named ${chalk.red(`"${template}"`)}.`);
-        process.exit(1);
-      }
-    }
-  }
-
-  if (repoInfo) {
-    oraInstance.text = chalk.bold(
-      `Downloading files from repo ${chalk.cyan(template)}. This might take a moment.`
-    );
-
-    await downloadAndExtractRepoAsync(projectRoot, repoInfo);
-  } else {
-    oraInstance.text = chalk.bold(
-      `Downloading files for example ${chalk.cyan(template)}. This might take a moment.`
-    );
-
-    await downloadAndExtractExampleAsync(projectRoot, template);
-  }
-
-  await ensureProjectHasGitIgnore(projectRoot);
-
-  return true;
-}
-
-function projectHasNativeCode(projectRoot: string): boolean {
-  const iosPath = path.join(projectRoot, 'ios');
-  const androidPath = path.join(projectRoot, 'android');
-  return fs.existsSync(iosPath) || fs.existsSync(androidPath);
-}
-
-function getScriptsForProject(projectRoot: string): Record<string, string> {
-  if (projectHasNativeCode(projectRoot)) {
-    return {
-      android: 'react-native run-android',
-      ios: 'react-native run-ios',
-      web: 'expo web',
-      start: 'react-native start',
-    };
-  }
-  return {
-    start: 'expo start',
-    android: 'expo start --android',
-    ios: 'expo start --ios',
-    web: 'expo web',
-    eject: 'expo eject',
-  };
-}
-
-export async function appendScriptsAsync(projectRoot: string): Promise<void> {
-  // Copy our default `.gitignore` if the application did not provide one
-  const packageJsonPath = path.join(projectRoot, 'package.json');
-  if (fs.existsSync(packageJsonPath)) {
-    let packageFile = new JsonFile(packageJsonPath);
-    let packageJson = await packageFile.readAsync();
-    packageJson = {
-      ...packageJson,
-      // Assign scripts for the workflow
-      scripts: {
-        ...getScriptsForProject(projectRoot),
-        // Existing scripts have higher priority
-        ...((packageJson.scripts || {}) as JSONObject),
-      },
-      // Adding `private` stops npm from complaining about missing `name` and `version` fields.
-      // We don't add a `name` field because it also exists in `app.json`.
-      private: true,
-    };
-
-    await packageFile.writeAsync(packageJson);
-  }
-}
-
-function ensureProjectHasGitIgnore(projectRoot: string): void {
-  // Copy our default `.gitignore` if the application did not provide one
-  const ignorePath = path.join(projectRoot, '.gitignore');
-  if (!fs.existsSync(ignorePath)) {
-    fs.copyFileSync(require.resolve('../template/gitignore'), ignorePath);
-  }
-}
-
 function hasExample(name: string): Promise<boolean> {
   return isUrlOk(
     `https://api.github.com/repos/nomi9995/boilerplate-examples/contents/${encodeURIComponent(
@@ -250,26 +157,17 @@ function hasExample(name: string): Promise<boolean> {
   );
 }
 
-function downloadAndExtractRepoAsync(
-  root: string,
-  { username, name, branch, filePath }: RepoInfo
-): Promise<void> {
-  const strip = filePath ? filePath.split('/').length + 1 : 1;
-  return pipeline(
-    got.stream(`https://codeload.github.com/${username}/${name}/tar.gz/${branch}`),
-    tar.extract({ cwd: root, strip }, [`${name}-${branch}${filePath ? `/${filePath}` : ''}`])
-  );
-}
-
-function downloadAndExtractExampleAsync(root: string, name: string): Promise<void> {
+function downloadAndExtractExampleAsync(language: string, name: string): Promise<void> {
   return pipeline(
     got.stream('https://codeload.github.com/nomi9995/boilerplate-examples/tar.gz/master'),
-    tar.extract({ cwd: root, strip: 2 }, [`examples-master/${name}`])
+    tar.extract({ cwd: './', strip: 2 }, [`boilerplate-examples-master/${language}/${name}`])
   );
 }
 
-async function listAsync(): Promise<any> {
-  const res = await got('https://api.github.com/repos/nomi9995/boilerplate-examples/contents');
+async function listAsync(subdir = ''): Promise<any> {
+  const res = await got(
+    `https://api.github.com/repos/nomi9995/boilerplate-examples/contents${subdir}`
+  );
   const results = JSON.parse(res.body);
   return results.filter(({ name, type }: any) => type === 'dir' && !name?.startsWith('.'));
 }
