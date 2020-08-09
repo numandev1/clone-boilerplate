@@ -16,7 +16,7 @@ npx clone-boilerplate
 npx cb
 
 ```
-### Contribution
+### Contributing
 
 If you'd like to contribute something, please check out our [contributing guide](https://github.com/nomi9995/clone-boilerplate/blob/master/contributing.md "contributing guide")!
 
@@ -30,7 +30,7 @@ The examples feature was inspired by the `templates` system of [create-react-nat
 ## Contributors ✨
 
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
