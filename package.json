@@ -85,7 +85,9 @@
     "toolkit",
     "template",
     "javascript",
-    "python"
+    "python",
+    "cli",
+    "clone-boilerplate"
   ],
   "author": "nomi9995",
   "license": "MIT",
