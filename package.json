@@ -1,5 +1,5 @@
 {
-  "name": "create-boilerplate-cli",
+  "name": "clone-boilerplate",
   "version": "0.0.1",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nomi9995/create-boilerplate-cli.git"
+    "url": "git+https://github.com/nomi9995/clone-boilerplate.git"
   },
   "keywords": [
     "create",
@@ -17,7 +17,7 @@
   "author": "nomi9995",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/nomi9995/create-boilerplate-cli/issues"
+    "url": "https://github.com/nomi9995/clone-boilerplate/issues"
   },
-  "homepage": "https://github.com/nomi9995/create-boilerplate-cli#readme"
+  "homepage": "https://github.com/nomi9995/clone-boilerplate#readme"
 }
