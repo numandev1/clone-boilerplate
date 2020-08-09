@@ -7,6 +7,13 @@
 </p>
 
 <!-- Body -->
+
+### using npx
+```sh
+npx clone-boilerplate
+```
+
+
 ### using npm
 ```sh
 npm i -g clone-boilerplate
@@ -14,15 +21,10 @@ npm i -g clone-boilerplate
 
 ```sh
 clone-boilerplate
-```
-##### OR
-```sh
-npx cb
-```
 
-### using npx
-```sh
-npx clone-boilerplate
+or
+
+cb
 ```
 
 ### Contributing
