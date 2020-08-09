@@ -7,15 +7,24 @@
 </p>
 
 <!-- Body -->
+### using npm
+```sh
+npm i -g clone-boilerplate
+```
 
 ```sh
-npx clone-boilerplate
+clone-boilerplate
 ```
 ##### OR
 ```sh
 npx cb
-
 ```
+
+### using npx
+```sh
+npx clone-boilerplate
+```
+
 ### Contributing
 
 If you'd like to contribute something, please check out our [contributing guide](https://github.com/nomi9995/clone-boilerplate/blob/master/contributing.md "contributing guide")!

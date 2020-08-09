@@ -1,14 +1,15 @@
 {
   "name": "clone-boilerplate",
-  "version": "0.0.2",
-  "description": "",
+  "version": "0.0.4",
+  "description": "clone universal boilerplates",
   "main": "build",
   "bin": {
     "clone-boilerplate": "./build/index.js",
     "cb": "./build/index.js"
   },
   "files": [
-    "build"
+    "build",
+    "patches"
   ],
   "scripts": {
     "prepublishOnly": "yarn run clean && yarn run build",
@@ -18,7 +19,7 @@
     "build:dev": "ncc build ./bin/index.ts -o build/",
     "build": "ncc build ./bin/index.ts -o build/ --minify --no-cache --no-source-map-register",
     "clean": "rimraf ./build/",
-    "postinstall": "patch-package"
+    "postinstall_": "patch-package"
   },
   "husky": {
     "hooks": {
