@@ -3,12 +3,19 @@
   "version": "0.0.1",
   "description": "",
   "main": "build",
+  "bin": {
+    "clone-boilerplate": "./build/index.js",
+    "cb": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
   "scripts": {
     "prepublishOnly": "yarn run clean && yarn run build",
     "lint": "eslint .",
     "test": "jest",
     "watch": "yarn run build:dev -w",
-    "build:dev": "ncc build ./src/index.ts -o build/",
+    "build:dev": "ncc build ./bin/index.ts -o build/",
     "build": "ncc build ./bin/index.ts -o build/ --minify --no-cache --no-source-map-register",
     "clean": "rimraf ./build/",
     "postinstall": "patch-package"
@@ -40,7 +47,7 @@
     "@zeit/ncc": "^0.22.3",
     "babel-jest": "^26.0.1",
     "chalk": "2.4.2",
-    "commander": "2.20.0",
+    "commander": "^5.1.0",
     "eslint": "^6.6.0",
     "eslint-config-universe": "^2.1.0",
     "execa": "^4.0.1",
@@ -76,5 +83,8 @@
   "bugs": {
     "url": "https://github.com/nomi9995/clone-boilerplate/issues"
   },
-  "homepage": "https://github.com/nomi9995/clone-boilerplate#readme"
+  "homepage": "https://github.com/nomi9995/clone-boilerplate#readme",
+  "contributors": [
+    "Numan <muhammadnuman70@gmail.com> (https://github.com/nomi9995)"
+  ]
 }

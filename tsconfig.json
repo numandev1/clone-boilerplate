@@ -1,0 +1,10 @@
+{
+  "include": ["bin/**/*.ts"],
+  "compilerOptions": {
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "rootDir": "bin",
+    "declaration": false,
+    "composite": false
+  }
+}
