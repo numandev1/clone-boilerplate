@@ -8,4 +8,4 @@ Thanks for contributing! 😁 Here are some rules that will make your example la
 
 
 
-If you have doubts about any of these steps, please feel free the reach out to me personally @nomi9995 on Twitter 😁
+If you have doubts about any of these steps, please feel free the reach out to me personally [@nomi9995](https://twitter.com/nomi9995) on Twitter 😁
