@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <img height="450" src="/media/demo.gif">
+  <img height="450" src="/media/demo.gif?raw=true">
 </p>
 
 <!-- Body -->
