@@ -1,9 +1,13 @@
+<!-- Title -->
+<p align="center">
+<img src="/media/boilerplateIcon.png" alt="alt text" width="150"/>
+</p>
+
 <!-- Header -->
 
 <p align="center">
   <b>Clone Universal Boilerplates for everylanguage.</b>
   <br />
-  
 </p>
 
 <!-- Body -->
