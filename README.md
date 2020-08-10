@@ -26,7 +26,7 @@ npm i -g clone-boilerplate
 ```sh
 clone-boilerplate
 
-or
+# or you can write blow command
 
 cb
 ```
