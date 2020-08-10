@@ -10,6 +10,10 @@
   <br />
 </p>
 
+<p align="center">
+  <img height="450" src="/media/demo.gif">
+</p>
+
 <!-- Body -->
 
 ### using npx

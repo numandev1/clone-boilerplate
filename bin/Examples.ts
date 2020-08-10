@@ -35,10 +35,28 @@ export async function promptAsync(): Promise<string | null> {
   }
 
   if (languagesJson) {
-    const choices = languagesJson.map(({ name }: any) => ({
+    let choices = languagesJson.map(({ name }: any) => ({
       title: name,
       value: name,
     }));
+
+    choices.push({
+      title: 'Python',
+      value: 'Python',
+    });
+    choices.push({
+      title: 'Go',
+      value: 'Go',
+    });
+    choices.push({
+      title: 'Java',
+      value: 'Java',
+    });
+
+    choices.push({
+      title: 'Asp/C#',
+      value: 'Asp/C#',
+    });
 
     const languageRes = await prompts({
       type: 'autocomplete',
