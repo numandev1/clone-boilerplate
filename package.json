@@ -1,6 +1,6 @@
 {
   "name": "clone-boilerplate",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "clone universal boilerplates",
   "main": "build",
   "bin": {
