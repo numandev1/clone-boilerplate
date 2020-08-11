@@ -35,6 +35,9 @@ clone-boilerplate
 cb
 ```
 
+### Add New Boilerplate
+you can add new boilerplate here [Boilerplate-Examples](https://github.com/nomi9995/boilerplate-examples). Please read Contributing guide below.
+
 ### Contributing
 
 If you'd like to contribute something, please check out our [contributing guide](https://github.com/nomi9995/clone-boilerplate/blob/master/contributing.md "contributing guide")!
