@@ -6,7 +6,7 @@
 <!-- Header -->
 
 <p align="center">
-  <b>Clone Universal Boilerplates for everylanguage.</b>
+  <b>Clone Universal Boilerplates for every language.</b>
   <br />
 </p>
 
